@@ -1,0 +1,4 @@
+streamlit>=1.45
+fastembed>=0.5
+groq>=0.30
+numpy

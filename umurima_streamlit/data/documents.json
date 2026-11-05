@@ -1,0 +1,117 @@
+{
+ "maize_faw_ffs_experiences_fao.pdf": {
+  "url": "https://www.fao.org/3/cb3890en/cb3890en.pdf",
+  "source": "FAO (2021) Fall armyworm management: Farmer field school experiences in Africa",
+  "crop": "maize"
+ },
+ "maize_faw_ipm_guidelines_fao.pdf": {
+  "url": "https://openknowledge.fao.org/server/api/core/bitstreams/a721f76e-2cf5-4dad-b3b1-6d1c07e3d481/content",
+  "source": "FAO (2021) Guidelines for an IPM strategy for fall armyworm control",
+  "crop": "maize"
+ },
+ "maize_sustainable_production_manual.pdf": {
+  "url": "https://cgspace.cgiar.org/server/api/core/bitstreams/40fbec24-8696-4f7d-b2d1-f6ade042ac7a/content",
+  "source": "CGIAR Manual for Sustainable Maize Production (Ghana)",
+  "crop": "maize"
+ },
+ "maize_value_chain_rwanda_unido.pdf": {
+  "url": "https://downloads.unido.org/ot/53/28/5328232/HABIMANA_EFR_FLD_AFR_RWA_RWA_2013.pdf",
+  "source": "UNIDO (2013) Rwanda maize value chain analysis",
+  "crop": "maize"
+ },
+ "beans_training_manual_maaif_uganda.pdf": {
+  "url": "https://www.agriculture.go.ug/wp-content/uploads/2020/07/MAAIF-Beans-training-manual-for-extension-workers.pdf",
+  "source": "MAAIF Uganda: Beans training manual for extension workers",
+  "crop": "beans"
+ },
+ "beans_production_manual_farm_africa.pdf": {
+  "url": "https://www.farmafrica.org/wp-content/uploads/2025/11/Farm-Africa-Beans-Production-Training-Manual.pdf",
+  "source": "Farm Africa: Beans production training manual",
+  "crop": "beans"
+ },
+ "beans_root_rot_pocket_guide.pdf": {
+  "url": "https://assets.publishing.service.gov.uk/media/57a08bf4e5274a27b2000ea1/RIU_pocketguide_10.pdf",
+  "source": "Research Into Use pocket guide: Bean root rot",
+  "crop": "beans"
+ },
+ "cassava_reference_manual_iita.pdf": {
+  "url": "https://cassavabase.org/ftp/ftp/documents/trait_descriptors/IITA_reference_manual_1990.pdf",
+  "source": "IITA (1990) Cassava in Tropical Africa: A Reference Manual",
+  "crop": "cassava"
+ },
+ "potato_late_blight_plantwise_kenya.pdf": {
+  "url": "https://factsheetadmin.plantwise.org/Uploads/PDFs/20117800552.pdf",
+  "source": "Plantwise factsheet: Potato late blight (Kenya)",
+  "crop": "potato"
+ },
+ "potato_late_blight_lucid.pdf": {
+  "url": "https://apps.lucidcentral.org/ppp_v9/pdf/web_mini/potato_late_blight_265.pdf",
+  "source": "Pacific Pests, Pathogens and Weeds: Potato late blight",
+  "crop": "potato"
+ },
+ "potato_late_blight_new_brunswick.pdf": {
+  "url": "https://www2.gnb.ca/content/dam/gnb/Departments/10/pdf/Agriculture/potatoes-pommes-de-terre/late-blight-of-potato.pdf",
+  "source": "Government of New Brunswick: Late blight of potato",
+  "crop": "potato"
+ },
+ "potato_sector_policy_rwanda_bpr.pdf": {
+  "url": "https://findevgateway.org/sites/default/files/publications/files/bpr_irish_potato_sector_policy_-_final.pdf",
+  "source": "BPR Rwanda: Irish potato sector policy",
+  "crop": "potato"
+ },
+ "potato_gap_burera_rwanda.pdf": {
+  "url": "https://afjare.org/wp-content/uploads/2025/05/2.-Mugisha-et-al.pdf",
+  "source": "Mugisha et al. (2024) Good agricultural practices and Irish potato production, Burera, Rwanda",
+  "crop": "potato"
+ },
+ "banana_bxw_plantwise.pdf": {
+  "url": "https://factsheetadmin.plantwise.org/Uploads/PDFs/20167800917.pdf",
+  "source": "Plantwise factsheet: How to recognise banana Xanthomonas wilt",
+  "crop": "banana"
+ },
+ "banana_bxw_lucid.pdf": {
+  "url": "https://apps.lucidcentral.org/pppw_v11/pdf/web_full/banana_xanthomonas_wilt_523.pdf",
+  "source": "Pacific Pests, Pathogens, Weeds and Pesticides: Banana xanthomonas wilt",
+  "crop": "banana"
+ },
+ "beans_varieties_guide_rab_2012.pdf": {
+  "url": "https://cgspace.cgiar.org/server/api/core/bitstreams/04d75806-c077-445b-b778-7140efd48163/content",
+  "source": "RAB (2012) Bean Varieties Information Guide (Rwanda Agriculture Board)",
+  "crop": "beans"
+ },
+ "beans_icm_rwanda_burundi.pdf": {
+  "url": "https://cgspace.cgiar.org/server/api/core/bitstreams/d2e0ce15-7433-4200-a913-d5a914e0bc58/content",
+  "source": "Alliance Bioversity-CIAT and RAB (2025) Integrated crop management for beans in Rwanda and Burundi",
+  "crop": "beans"
+ },
+ "maize_smart_fertiliser_rwanda.pdf": {
+  "url": "https://cgspace.cgiar.org/server/api/core/bitstreams/ddda75f4-25c5-4d38-8160-6b35f237033f/content",
+  "source": "RAB-CGIAR (2025) Smart fertiliser recommendations for maize in Rwanda",
+  "crop": "maize"
+ },
+ "maize_faw_sms_advisories_rwanda.pdf": {
+  "url": "https://cgspace.cgiar.org/server/api/core/bitstreams/6dae1b02-4035-4175-a61e-e3f67de3b03e/content",
+  "source": "CGIAR and RAB (2023) Fall armyworm and striga SMS advisories for farmers in Rwanda",
+  "crop": "maize"
+ },
+ "potato_ware_gap_trainer_guide_rwanda_cip.pdf": {
+  "url": "https://cgspace.cgiar.org/server/api/core/bitstreams/820f3719-db7e-4a41-9634-e16400d10cd2/content",
+  "source": "CIP, RAB and Agriterra: Good agricultural practices for ware potato production in Rwanda (trainer guide)",
+  "crop": "potato"
+ },
+ "potato_gap_demonstration_guide_rwanda_cip.pdf": {
+  "url": "https://cgspace.cgiar.org/server/api/core/bitstreams/e3a83ab4-484f-476e-a02e-350368923274/content",
+  "source": "CIP, RAB and Agriterra: Good agricultural practices for potato production in Rwanda (demonstration guide)",
+  "crop": "potato"
+ },
+ "potato_seed_multiplication_gap_rwanda_cip.pdf": {
+  "url": "https://cgspace.cgiar.org/server/api/core/bitstreams/40231862-59cc-4d4e-b893-5d902314cd2c/content",
+  "source": "CIP, RAB and Agriterra: Good agricultural practices for seed potato multiplication in Rwanda",
+  "crop": "potato"
+ },
+ "cassava_pests_diseases_field_guide_iita.pdf": {
+  "url": "https://cgspace.cgiar.org/server/api/core/bitstreams/e4f234f2-ad73-4579-9485-7e93c2d1b8fc/content",
+  "source": "IITA (2025) Pests and diseases of cassava: A field identification guide",
+  "crop": "cassava"
+ }
+}

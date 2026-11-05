@@ -1,0 +1,50 @@
+[
+ {
+  "what": "hero",
+  "title": "A hill with terraces.jpg",
+  "artist": "Peace Batuma",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:A_hill_with_terraces.jpg"
+ },
+ {
+  "what": "maize",
+  "title": "Ikigori,Maize.jpg",
+  "artist": "Camilopiz",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+  "page": "https://commons.wikimedia.org/wiki/File:Ikigori,Maize.jpg"
+ },
+ {
+  "what": "beans",
+  "title": "Intercropping maize and beans.jpg",
+  "artist": "AnnaJB",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Intercropping_maize_and_beans.jpg"
+ },
+ {
+  "what": "potato",
+  "title": "Harvest of Irish potatoes in Rwanda West, EWRM Project.jpg",
+  "artist": "DUSABEMUNGU Ange de la Victoire",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Harvest_of_Irish_potatoes_in_Rwanda_West,_EWRM_Project.jpg"
+ },
+ {
+  "what": "cassava",
+  "title": "Cassava plantation, April season.jpg",
+  "artist": "Nana Pearls",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Cassava_plantation,_April_season.jpg"
+ },
+ {
+  "what": "banana",
+  "title": "Banana plantation in Gatsibo.jpg",
+  "artist": "Jnshuti",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Banana_plantation_in_Gatsibo.jpg"
+ }
+]
