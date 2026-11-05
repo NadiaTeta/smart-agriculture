@@ -162,6 +162,10 @@ def clean_answer(text):
 
 
 # ----------------------------------------------------------------- source cards
+RW_FLAG = ('<svg class="flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="10" fill="#20603d"/>'
+           '<rect width="30" height="20" fill="#20603d"/><rect width="30" height="13.3" fill="#fad201"/>'
+           '<rect width="30" height="10" fill="#00a1de"/><circle cx="24" cy="4.2" r="2.3" fill="#e5be01"/></svg>')
+
 def is_rwandan(source):
     return "Rwanda" in source or "RAB" in source
 
@@ -179,7 +183,7 @@ def sources_html(answer, results):
         url = DOCS.get(r["file"], {}).get("url", "")
         link = (f'<a class="src-link" href="{html.escape(url)}#page={r["page"]}" target="_blank" '
                 f'rel="noopener">Open guide ↗</a>') if url else ""
-        badge = '<span class="badge rw">🇷🇼 Rwanda guide</span>' if is_rwandan(r["source"]) else ""
+        badge = f'<span class="badge rw">{RW_FLAG} Rwanda guide</span>' if is_rwandan(r["source"]) else ""
         excerpt = html.escape(r["text"][:600]) + ("…" if len(r["text"]) > 600 else "")
         cards.append(
             f'<div class="src-card"><div class="src-top"><span class="src-num">{n}</span>'
@@ -221,7 +225,7 @@ html, body, .stApp, [data-testid="stAppViewContainer"] { background: var(--cream
 .stApp, .stApp * { font-family: 'Nunito', system-ui, sans-serif; }
 .stApp [data-testid="stIconMaterial"], .stApp .material-symbols-rounded { font-family: 'Material Symbols Rounded' !important; }
 header[data-testid="stHeader"], #MainMenu, footer, .stDeployButton, [data-testid="stToolbar"] { display:none !important; }
-.block-container { max-width: 1180px !important; padding: 1rem 1rem 7rem !important; }
+.block-container { max-width: 1180px !important; padding: 1rem 1rem 2rem !important; }
 @keyframes rise { from { opacity:0; transform: translateY(14px);} to {opacity:1; transform:none;} }
 
 /* Header */
@@ -250,6 +254,7 @@ header[data-testid="stHeader"], #MainMenu, footer, .stDeployButton, [data-testid
 .hero h1 { font-size:42px !important; line-height:1.1 !important; margin:16px 0 12px !important; color:#fff !important;
            font-weight:900 !important; letter-spacing:-1px; padding:0 !important; }
 .hl { color:#ffd76a; }
+.flag { width:18px; height:12px; border-radius:2px; vertical-align:-1px; margin-right:4px; display:inline-block; }
 .hero p { color:rgba(255,255,255,.9) !important; font-size:16.5px; line-height:1.55; margin:0; }
 .stats { display:flex; gap:12px; margin-top:22px; flex-wrap:wrap; }
 .stats div { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.28); backdrop-filter: blur(8px);
@@ -303,6 +308,7 @@ TILES
 
 /* Chat input */
 [data-testid="stBottom"] > div, [data-testid="stBottomBlockContainer"] { background: var(--cream) !important; }
+.st-key-chatcard [data-testid="stChatInput"] { margin-top:12px; }
 [data-testid="stChatInput"] { border:2px solid var(--green-600) !important; border-radius:18px !important; background:#fff !important;
     box-shadow: 0 10px 24px -16px rgba(23,61,36,.5); }
 [data-testid="stChatInput"] textarea { font-size:16px !important; }
@@ -360,7 +366,7 @@ def header_html():
 <section class="hero">
   <div class="hero-bg" style="background-image:url('{photo("hero")}')"></div><div class="hero-shade"></div>
   <div class="hero-content">
-    <span class="pill">🇷🇼 Made for farmers in Rwanda</span>
+    <span class="pill">{RW_FLAG} Made for farmers in Rwanda</span>
     <h1>Good advice for every <span class="hl">season</span>, right when you need it.</h1>
     <p>Ask about pests, diseases, planting, fertilizer or storage. Every answer comes from agricultural
     guides you can trust, with the page it came from.</p>
@@ -423,6 +429,7 @@ with right:
 with left:
     with st.container(key="chatcard"):
         chatbox = st.container(height=520, key="chatbox", border=False)
+        typed = st.chat_input("Type your farming question…")   # inside the card, so it scrolls with the page
         with chatbox:
             if not st.session_state.messages:
                 st.markdown(WELCOME, unsafe_allow_html=True)
@@ -446,7 +453,6 @@ with left:
 
 st.markdown(footer_html(), unsafe_allow_html=True)
 
-typed = st.chat_input("Type your farming question…")
 question = (typed or st.session_state.pending or "").strip()
 st.session_state.pending = None
 
