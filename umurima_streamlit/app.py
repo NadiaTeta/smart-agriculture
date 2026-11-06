@@ -303,6 +303,9 @@ TILES
     white-space: normal !important; overflow: visible !important; text-overflow: clip !important; line-height:1.3; }
 [class*="st-key-sugg_"] button > div, [class*="st-key-sugg_"] button span { justify-content:flex-start !important; text-align:left !important; width:100%; }
 [class*="st-key-sugg_"] button:hover { background: var(--green-100) !important; border-style: solid !important; transform: translateY(-2px); }
+.st-key-quickcrops button { background:#fff !important; border:1.5px solid #cfe0c3 !important; border-radius:999px !important; }
+.st-key-quickcrops button p { color: var(--green-900) !important; font-weight:800 !important; font-size:14px !important; }
+.st-key-quickcrops button:hover { background: var(--green-100) !important; border-color: var(--green-600) !important; }
 .st-key-newchat button { background:#fff !important; border:1.5px solid #dfe8d8 !important; border-radius:14px !important; }
 .st-key-newchat button p { color: var(--muted) !important; font-weight:800 !important; }
 
@@ -397,10 +400,42 @@ local extension officer or RAB.</span><span>Built with Retrieval-Augmented Gener
 <details class="credits"><summary>📷 Photo credits (Wikimedia Commons)</summary><ul>{items}</ul></details>"""
 
 
+# ----------------------------------------------------------------- "which crop?" detection
+CROP_WORDS = {   # crop names in English and Kinyarwanda, plus problems that belong to one crop
+    "maize": ["maize", "corn", "ibigori", "armyworm", "stem borer", "push-pull", "push pull", "striga", "tassel", "cob"],
+    "beans": ["bean", "ibishyimbo", "bean fly", "rhizobi", "inoculant", "climbing variet", "climber", "root rot"],
+    "potato": ["potato", "ibirayi", "late blight", "early blight", "tuber"],
+    "cassava": ["cassava", "manioc", "imyumbati", "mosaic", "brown streak", "mealybug", "stem cutting"],
+    "banana": ["banana", "plantain", "urutoki", "ibitoki", "xanthomonas", "bxw", "male bud", "sucker", "pseudostem"],
+}
+FARM_WORDS = re.compile(r"\b(plant|crop|farm|field|garden|harvest|yield|seed|sow|soil|fertili[sz]|manure|compost|pest|"
+                        r"insect|disease|weed|leaf|leaves|root|grow|water|irrigat|spray|store|storage|variet|land|"
+                        r"spacing|season|rain|drought|yellow|wilt|rot|spot)", re.I)
+CROP_LABEL = {crop: label for label, crop in CROPS}
+
+
+def crops_mentioned(text):
+    t = text.lower()
+    return [c for c, words in CROP_WORDS.items() if any(w in t for w in words)]
+
+
+def needs_crop(question):
+    """True for a farming question that could be about any crop (e.g. 'How do I take care of my plants?')."""
+    return not crops_mentioned(question) and bool(FARM_WORDS.search(question))
+
+
+CLARIFY = ("🌱 Happy to help! **Which crop is this about?** The advice is different for each crop, "
+           "so I want to give you the right one. Pick a crop below, or tap a crop photo above.")
+SOURCES_CLARIFY = ('<div class="src-empty"><div class="src-empty-icon">🌾</div><b>Which crop?</b>'
+                   '<p>Tell me the crop and I will search only its guides.</p></div>')
+
+
 # ----------------------------------------------------------------- state
 st.session_state.setdefault("messages", [])     # [{"role", "content", "sources"}]
 st.session_state.setdefault("crop", None)
 st.session_state.setdefault("pending", None)
+st.session_state.setdefault("awaiting", None)    # a general question waiting for the farmer to pick a crop
+st.session_state.setdefault("picked", "none")    # crop picked as an answer to "which crop?"
 
 st.markdown(css(), unsafe_allow_html=True)
 st.markdown(header_html(), unsafe_allow_html=True)
@@ -415,6 +450,8 @@ with st.container(key="croprow"):
         with col:
             if st.button(label, key=f"crop_{crop or 'all'}", use_container_width=True):
                 st.session_state.crop = crop
+                if st.session_state.awaiting:
+                    st.session_state.picked = crop
                 st.rerun()
 
 # ----------------------------------------------------------------- main area
@@ -437,8 +474,14 @@ with left:
                 with st.chat_message(m["role"], avatar="🧑🏾‍🌾" if m["role"] == "user" else "🌱"):
                     marker = '<span class="u-msg"></span>' if m["role"] == "user" else '<span class="a-msg"></span>'
                     st.markdown(marker + m["content"], unsafe_allow_html=True)
-                    if m["role"] == "assistant":
+                    if m["role"] == "assistant" and not m.get("clarify"):
                         st.feedback("thumbs", key=f"fb_{i}")
+            if st.session_state.awaiting and st.session_state.messages and st.session_state.messages[-1].get("clarify"):
+                with st.container(key="quickcrops"):
+                    for col, (label, crop) in zip(st.columns(5), CROPS[1:]):
+                        with col:
+                            if st.button(label, key=f"qr_{crop}", use_container_width=True):
+                                st.session_state.picked = crop
         st.markdown('<div class="suggest-title">Try asking:</div>', unsafe_allow_html=True)
         qs = SUGGESTIONS[st.session_state.crop]
         for row in (qs[:2], qs[2:]):
@@ -449,39 +492,87 @@ with left:
         if st.session_state.messages:
             if st.button("🔄 New chat", key="newchat"):
                 st.session_state.messages = []
+                st.session_state.awaiting = None
                 st.rerun()
 
 st.markdown(footer_html(), unsafe_allow_html=True)
 
 question = (typed or st.session_state.pending or "").strip()
 st.session_state.pending = None
+picked, st.session_state.picked = st.session_state.picked, "none"
 
-# ----------------------------------------------------------------- answer a question
-if question:
-    st.session_state.messages.append({"role": "user", "content": html.escape(question)})
+
+def show_user(text):
+    st.session_state.messages.append({"role": "user", "content": html.escape(text)})
     with chatbox:
         with st.chat_message("user", avatar="🧑🏾‍🌾"):
-            st.markdown('<span class="u-msg"></span>' + html.escape(question), unsafe_allow_html=True)
+            st.markdown('<span class="u-msg"></span>' + html.escape(text), unsafe_allow_html=True)
+
+
+def answer(question, crop):
+    """Retrieve from the guides (only this crop's, if given), stream the answer, save it, refresh the page."""
+    with chatbox:
         sources_box.markdown(f'<div class="sources-panel">{SOURCES_SEARCHING}</div>', unsafe_allow_html=True)
-        results = retrieve(question, st.session_state.crop)
+        results = retrieve(question, crop)
         with st.chat_message("assistant", avatar="🌱"):
             try:
-                answer = st.write_stream(stream_answer(build_messages(question, results)))
+                text = st.write_stream(stream_answer(build_messages(question, results)))
             except Exception as e:  # noqa: BLE001
                 msg = str(e).lower()
                 if "rate" in msg and "limit" in msg:
-                    answer = "⏳ Too many questions right now. Please wait a minute and try again."
+                    text = "⏳ Too many questions right now. Please wait a minute and try again."
                 elif "api key" in msg or "api_key" in msg or "401" in msg or "auth" in msg:
-                    answer = "🔑 The app's Groq API key is missing or wrong. Please tell the app owner."
+                    text = "🔑 The app's Groq API key is missing or wrong. Please tell the app owner."
                 else:
-                    answer = f"⚠️ Sorry, something went wrong while writing the answer ({type(e).__name__}). Please try again."
-                st.markdown(answer)
+                    text = f"⚠️ Sorry, something went wrong while writing the answer ({type(e).__name__}). Please try again."
+                st.markdown(text)
                 results = []
-    answer = clean_answer(answer if isinstance(answer, str) else "".join(answer))
-    if results and re.search(r"pesticide|fungicide|insecticide|herbicide|spray|chemical", answer, re.I) \
-            and REFUSAL not in answer.lower():
-        answer += ("\n\n<sub>⚠️ Before using any chemical, confirm the product and dose with your local "
-                   "extension officer or RAB.</sub>")
-    st.session_state.messages.append({"role": "assistant", "content": answer,
-                                      "sources": sources_html(answer, results) if results else SOURCES_IDLE})
+    text = clean_answer(text if isinstance(text, str) else "".join(text))
+    if results and re.search(r"pesticide|fungicide|insecticide|herbicide|spray|chemical", text, re.I) \
+            and REFUSAL not in text.lower():
+        text += ("\n\n<sub>⚠️ Before using any chemical, confirm the product and dose with your local "
+                 "extension officer or RAB.</sub>")
+    st.session_state.messages.append({"role": "assistant", "content": text,
+                                      "sources": sources_html(text, results) if results else SOURCES_IDLE})
     st.rerun()
+
+
+def answer_waiting(crop, shown):
+    """Answer the general question the farmer asked before, now for the crop they picked."""
+    waiting = st.session_state.awaiting
+    st.session_state.awaiting = None
+    st.session_state.crop = crop
+    show_user(shown)
+    crop_name = CROP_LABEL[crop].split(" ", 1)[1] if crop else "any crop"
+    answer(f"{waiting} (My crop: {crop_name})", crop)
+
+
+# ----------------------------------------------------------------- what happens on this run
+if picked != "none" and st.session_state.awaiting:          # a crop button or crop photo was tapped
+    answer_waiting(picked, CROP_LABEL[picked])
+
+elif question and st.session_state.awaiting:                 # the farmer typed after "which crop?"
+    named = crops_mentioned(question)
+    if len(named) == 1 and len(question.split()) <= 6:       # e.g. "maize", "it's for beans"
+        answer_waiting(named[0], question)
+    elif question.lower().strip(" .!") in ("all", "all crops", "any", "any crop", "general"):
+        answer_waiting(None, question)
+    else:                                                    # a brand-new question
+        st.session_state.awaiting = None
+        st.session_state.pending = question
+        st.rerun()
+
+elif question:
+    crop = st.session_state.crop
+    if crop is None:
+        named = crops_mentioned(question)
+        if len(named) == 1:
+            crop = named[0]                                   # e.g. "maize spacing" searches maize guides only
+        elif not named and needs_crop(question):              # too general: ask which crop first
+            show_user(question)
+            st.session_state.awaiting = question
+            st.session_state.messages.append({"role": "assistant", "content": CLARIFY,
+                                              "sources": SOURCES_CLARIFY, "clarify": True})
+            st.rerun()
+    show_user(question)
+    answer(question, crop)
